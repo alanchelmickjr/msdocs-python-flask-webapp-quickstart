@@ -27,17 +27,14 @@ def favicon():
 def hello():
    email = request.form.get('email')
 
-   def add_email():
-       email = request.json.get('email')
+   if not email:
+       return jsonify({'error': 'Email is required'}), 400
 
-       if not email:
-           return jsonify({'error': 'Email is required'}), 400
-
-       new_email = Email(email=email)
-       db.session.add(new_email)
-       db.session.commit()
-       print("Email added successfully!")
-       return jsonify({'message': 'Email added successfully'}), 201
+   new_email = Email(email=email)
+   db.session.add(new_email)
+   db.session.commit()
+   print("Email added successfully!")
+   return jsonify({'message': 'Email added successfully'}), 201
 
    if email:
        print('Request for hello page received with email=%s' % email)
