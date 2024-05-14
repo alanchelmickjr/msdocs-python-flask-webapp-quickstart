@@ -1,18 +1,11 @@
 import os
-from flask_sqlalchemy import SQLAlchemy
+
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emails.db'
-db = SQLAlchemy(app)
 
-class Email(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
 
-    def __repr__(self):
-        return '<Email %r>' % self.email
 @app.route('/')
 def index():
    print('Request for index page received')
@@ -25,22 +18,13 @@ def favicon():
 
 @app.route('/hello', methods=['POST'])
 def hello():
-   email = request.form.get('email')
+   name = request.form.get('name')
 
-   if not email:
-       return jsonify({'error': 'Email is required'}), 400
-
-   new_email = Email(email=email)
-   db.session.add(new_email)
-   db.session.commit()
-   print("Email added successfully!")
-   return jsonify({'message': 'Email added successfully'}), 201
-
-   if email:
-       print('Request for hello page received with email=%s' % email)
-       return render_template('hello.html', email = email)
+   if name:
+       print('Request for hello page received with name=%s' % name)
+       return render_template('hello.html', name = name)
    else:
-       print('Request for hello page received with no email or blank email -- redirecting')
+       print('Request for hello page received with no name or blank name -- redirecting')
        return redirect(url_for('index'))
 
 
