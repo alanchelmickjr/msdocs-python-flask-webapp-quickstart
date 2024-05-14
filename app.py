@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import (Flask, redirect, render_template, request,
                    send_from_directory, url_for)
 
-app = Flask(__email__)
+app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emails.db'
 db = SQLAlchemy(app)
 
